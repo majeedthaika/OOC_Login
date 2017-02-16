@@ -27,7 +27,7 @@ public class SessionFilter implements Filter {
     }
 
     public void init(FilterConfig config) throws ServletException {
-        validURLList = new HashSet<String>(Arrays.asList("/index.jsp", "/user", "/modify", "/remove", "/logout"));
+        validURLList = new HashSet<String>(Arrays.asList("/index.jsp", "/user", "/new", "/modify", "/remove", "/logout"));
     }
 
     public void doFilter(ServletRequest req, ServletResponse res,

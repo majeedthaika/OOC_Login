@@ -29,8 +29,8 @@ public class ModifyServlet extends HttpServlet {
             request.setAttribute("title", "Edit "+user.getUserName()+"'s Info");
             request.setAttribute("readonly", "readonly");
 
+            request.setAttribute("id", user.getId());
             request.setAttribute("user", user.getUserName());
-            request.setAttribute("pass", user.getPassword());
             request.setAttribute("email", user.getEmail());
             request.setAttribute("first_name", user.getFirstName());
             request.setAttribute("last_name", user.getLastName());
@@ -38,35 +38,20 @@ public class ModifyServlet extends HttpServlet {
             RequestDispatcher rd = request.getRequestDispatcher("WEB-INF/modify.jsp");
             rd.include(request, response);
         } else {
-            request.setAttribute("title", "Add New User");
-            request.setAttribute("readonly", "");
-
-            request.setAttribute("user", null);
-            request.setAttribute("pass", null);
-            request.setAttribute("email", null);
-            request.setAttribute("first_name", null);
-            request.setAttribute("last_name", null);
-            RequestDispatcher rd = request.getRequestDispatcher("WEB-INF/modify.jsp");
-            rd.include(request, response);
+            response.sendRedirect("/");
         }
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String username = request.getParameter("user");
-        String password = userService.getSecurePassword(request.getParameter("pass"));
-        String email = request.getParameter("email");
-        String firstname = request.getParameter("first_name");
-        String lastname = request.getParameter("last_name");
+        System.out.println(request.getParameter("id"));
+        User user = userService.getUserByID(Integer.parseInt(request.getParameter("id")));
+        user.setUserName(request.getParameter("user"));
+        user.setEmail(request.getParameter("email"));
+        user.setFirstName(request.getParameter("first_name"));
+        user.setLastName(request.getParameter("last_name"));
 
-        User newFields = new User(firstname, lastname, username, password, email);
-
-        // show success / failure !!!!!!!!
-        if (userService.getUser(username) != null) {
-            userService.editUser(newFields);
-        } else {
-            userService.addUser(newFields);
-        }
-        response.sendRedirect("/");
+        userService.editUser(user);
+        response.sendRedirect("/user?username="+user.getUserName());
     }
 }

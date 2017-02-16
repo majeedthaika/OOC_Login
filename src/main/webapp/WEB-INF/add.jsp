@@ -21,24 +21,24 @@
 <%@ include file="logout.jsp" %>
 <div class="container">
     <div class="row">
-        <h2>${title}</h2>
+        <h2>Add New User</h2>
 
-        <form class="form-horizontal" action="/modify" method="post">
+        <form class="form-horizontal" action="/new" method="post">
             <fieldset>
 
                 <legend>Enter Info Here</legend>
 
                 <div class="form-group">
-                    <label class="col-md-4 control-label" for="id">User ID</label>
+                    <label class="col-md-4 control-label" for="user">Username</label>
                     <div class="col-md-4">
-                        <input id="id" name="id" class="form-control input-md" type="int" readonly value=${id}>
+                        <input id="user" name="user" placeholder="Insert your Username" class="form-control input-md" type="text" required value=${user} >
                     </div>
                 </div>
 
                 <div class="form-group">
-                    <label class="col-md-4 control-label" for="user">Username</label>
+                    <label class="col-md-4 control-label" for="pass">Password</label>
                     <div class="col-md-4">
-                        <input id="user" name="user" placeholder="Insert your Username" class="form-control input-md" type="text" required value=${user} >
+                        <input id="pass" name="pass" placeholder="Insert your Password" class="form-control input-md" type="password" required value=${pass} >
                     </div>
                 </div>
 

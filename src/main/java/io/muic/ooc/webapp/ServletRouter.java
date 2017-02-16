@@ -33,7 +33,6 @@ public class ServletRouter {
         initHome(ctx);
         initLogin(ctx);
         initUserPage(ctx);
-        initModifyPage(ctx);
         initSessionFilter(ctx);
     }
 
@@ -66,9 +65,12 @@ public class ServletRouter {
         deleteServlet.setUserManager(userService);
         Tomcat.addServlet(ctx, "DeleteServlet", deleteServlet);
         ctx.addServletMapping("/remove", "DeleteServlet");
-    }
 
-    private void initModifyPage(Context ctx) {
+        AddServlet addServlet = new AddServlet();
+        addServlet.setUserManager(userService);
+        Tomcat.addServlet(ctx, "AddServlet", addServlet);
+        ctx.addServletMapping("/new", "AddServlet");
+
         ModifyServlet modifyServlet = new ModifyServlet();
         modifyServlet.setUserManager(userService);
         Tomcat.addServlet(ctx, "ModifyServlet", modifyServlet);

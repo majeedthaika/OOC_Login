@@ -62,13 +62,40 @@ public class DatabaseService {
             resultSet = preparedStatement.executeQuery();
 
             if (resultSet.next()) {
+                Integer id = resultSet.getInt("id");
                 String first_name = resultSet.getString("first_name");
                 String last_name = resultSet.getString("last_name");
                 String username = resultSet.getString("username");
                 String password = resultSet.getString("password");
                 String email = resultSet.getString("email");
 
-                user = new User(first_name, last_name, username, password, email);
+                user = new User(id, first_name, last_name, username, password, email);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            close();
+        }
+        return user;
+    }
+
+    public User getUserByID(Integer search_id) {
+        User user = null;
+        try {
+            getDatabaseConnection();
+            preparedStatement = connect.prepareStatement
+                    ("SELECT * from USER where id=?");
+            preparedStatement.setInt(1, search_id);
+            resultSet = preparedStatement.executeQuery();
+
+            if (resultSet.next()) {
+                String first_name = resultSet.getString("first_name");
+                String last_name = resultSet.getString("last_name");
+                String username = resultSet.getString("username");
+                String password = resultSet.getString("password");
+                String email = resultSet.getString("email");
+
+                user = new User(search_id, first_name, last_name, username, password, email);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -96,12 +123,13 @@ public class DatabaseService {
                     .executeQuery("select * from USER");
 
             while (resultSet.next()) {
+                Integer id = resultSet.getInt("id");
                 String first_name = resultSet.getString("first_name");
                 String last_name = resultSet.getString("last_name");
                 String username = resultSet.getString("username");
                 String password = resultSet.getString("password");
                 String email = resultSet.getString("email");
-                users.add(new User(first_name, last_name, username, password, email));
+                users.add(new User(id, first_name, last_name, username, password, email));
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -116,7 +144,7 @@ public class DatabaseService {
         try {
             getDatabaseConnection();
             preparedStatement = connect
-                    .prepareStatement("INSERT into USER VALUES (?, ?, ?, ?, ?)");
+                    .prepareStatement("INSERT into USER VALUES (DEFAULT, ?, ?, ?, ?, ?)");
             preparedStatement.setString(1, user.getUserName());
             preparedStatement.setString(2, user.getPassword());
             preparedStatement.setString(3, user.getEmail());
@@ -138,12 +166,12 @@ public class DatabaseService {
         try {
             getDatabaseConnection();
             preparedStatement = connect.
-                    prepareStatement("UPDATE USER SET password=?, email=?, first_name=?, last_name=? WHERE username=?");
-            preparedStatement.setString(1, user.getPassword());
+                    prepareStatement("UPDATE USER SET username=?, email=?, first_name=?, last_name=? WHERE id=?");
+            preparedStatement.setString(1, user.getUserName());
             preparedStatement.setString(2, user.getEmail());
             preparedStatement.setString(3, user.getFirstName());
             preparedStatement.setString(4, user.getLastName());
-            preparedStatement.setString(5, user.getUserName());
+            preparedStatement.setInt(5, user.getId());
             preparedStatement.executeUpdate();
 
             success = true;

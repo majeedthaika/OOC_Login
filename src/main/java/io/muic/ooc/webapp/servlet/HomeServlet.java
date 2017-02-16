@@ -47,7 +47,7 @@ public class HomeServlet extends HttpServlet {
             request.setAttribute("userTable", userTable);
         }
 
-        RequestDispatcher rd = request.getRequestDispatcher("WEB-INF/home.jsp");
+        RequestDispatcher rd = request.getRequestDispatcher("WEB-INF/user-list.jsp");
         rd.include(request, response);
     }
 }

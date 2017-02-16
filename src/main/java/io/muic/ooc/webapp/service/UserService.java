@@ -28,6 +28,10 @@ public class UserService {
         return databaseService.getUser(username);
     }
 
+    public User getUserByID(Integer id) {
+        return databaseService.getUserByID(id);
+    }
+
     public boolean addUser(User user) {
         return databaseService.addNewUser(user);
     }

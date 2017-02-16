@@ -1,18 +1,28 @@
 package io.muic.ooc.webapp.service;
 
 public class User {
+    private Integer id;
     private String firstName;
     private String lastName;
     private String username;
     private String password;
     private String email;
 
-    public User(String firstName, String lastName, String username, String password, String email) {
+    public User(Integer id, String firstName, String lastName, String username, String password, String email) {
+        this.id = (id != null) ? id : null;
         this.firstName = (firstName != null) ? firstName : "";
         this.lastName = (lastName != null) ? lastName : "";
         this.username = (username != null) ? username : "";
         this.password = (password != null) ? password : "";
         this.email = (email != null) ? email : "";
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getFirstName() {
@@ -58,7 +68,7 @@ public class User {
 
     @Override
     public String toString() {
-        return "User{firstName=" + firstName +
+        return "User{id="+ id +", firstName=" + firstName +
                 ", lastName=" + lastName + ", username=" + username +
                 ", password=" + password + ", email=" + email + '}';
     }

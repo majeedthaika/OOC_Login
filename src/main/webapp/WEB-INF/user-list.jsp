@@ -6,8 +6,7 @@
 </head>
 <body>
 <%@ include file="logout.jsp" %>
-<h2>You sure you want to delete user account: ${user}?</h2>
-<a href="/remove?username=${user}&confirm=true" method="post" type="button" class="btn btn-danger">Delete</a>
-<%@ include file="home.jsp" %>
+<div>${userTable}</div>
+<a href="/new" method="post" class="btn btn-success">Add User</a>
 </body>
 </html>
