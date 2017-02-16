@@ -6,34 +6,48 @@
 package io.muic.ooc.webapp.servlet;
 
 import io.muic.ooc.webapp.service.SecurityService;
+import io.muic.ooc.webapp.service.User;
+import io.muic.ooc.webapp.service.UserService;
+
 import java.io.IOException;
+import java.util.List;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-/**
- *
- * @author gigadot
- */
 public class HomeServlet extends HttpServlet {
 
-    private SecurityService securityService;
+    private UserService userService;
 
-    public void setSecurityManager(SecurityService securityService) {
-        this.securityService = securityService;
+    public void setUserManager(UserService userService) {
+        this.userService = userService;
     }
 
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        boolean authorized = securityService.isAuthorized(request);
-        if (authorized) {
-            // do MVC in here
-            RequestDispatcher rd = request.getRequestDispatcher("WEB-INF/home.jsp");
-            rd.include(request, response);
-        } else {
-            response.sendRedirect("/login");
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        List<User> users = userService.getAllUsers();
+        request.setAttribute("userTable", null);
+
+        if (!users.isEmpty()) {
+            StringBuilder userTable = new StringBuilder(
+                    "<table class=\"table table-bordered table-striped\">" +
+                    "<thead class=\"thead-inverse\"><tr><th>Username</th><th>Action</th></thead><tbody>");
+            for (User user : users) {
+                userTable.append("<tr><td>");
+                userTable.append("<a href=\"/user?username="+user.getUserName()+"\">"+user.getUserName()+"</a>");
+                userTable.append("</td><td>");
+                userTable.append("<a href=\"/remove?username="+user.getUserName()+"&confirm=false\" " +
+                        "method=\"post\" type=\"button\" class=\"btn btn-danger\">Remove</a>");
+                userTable.append("</td></tr>");
+            }
+            userTable.append("</tbody></table>");
+            request.setAttribute("userTable", userTable);
         }
+
+        RequestDispatcher rd = request.getRequestDispatcher("WEB-INF/home.jsp");
+        rd.include(request, response);
     }
 }

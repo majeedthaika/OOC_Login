@@ -5,33 +5,26 @@
  */
 package io.muic.ooc.webapp.service;
 
-import java.util.HashMap;
-import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
-import org.apache.commons.lang.StringUtils;
 
-/**
- *
- * @author gigadot
- */
 public class SecurityService {
-    
-    private Map<String, String> userCredentials = new HashMap<String, String>() {{
-        put("admin", "123456");
-        put("muic", "1111");
-    }};
+
+    private DatabaseService databaseService;
+
+    public void setDatabaseService(DatabaseService databaseService) {
+        this.databaseService = databaseService;
+    }
     
     public boolean isAuthorized(HttpServletRequest request) {
         String username = (String) request.getSession()
                 .getAttribute("username");
         // do checking
-       return (username != null && userCredentials.containsKey(username));
+       return (username != null && databaseService.containsUser(username));
     }
     
     public boolean authenticate(String username, String password, HttpServletRequest request) {
-        String passwordInDB = userCredentials.get(username);
-        boolean isMatched = StringUtils.equals(password, passwordInDB);
-        if (isMatched) {
+        String passwordInDB = databaseService.getPassword(username);
+        if (databaseService.checkPassword(password, passwordInDB)) {
             request.getSession().setAttribute("username", username);
             return true;
         } else {
@@ -42,5 +35,4 @@ public class SecurityService {
     public void logout(HttpServletRequest request) {
         request.getSession().invalidate();
     }
-    
 }

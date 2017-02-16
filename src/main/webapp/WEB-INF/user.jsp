@@ -8,7 +8,7 @@
 <a href="/logout" method="post" class="btn btn-info btn-lg">
     <span class="glyphicon glyphicon-log-out"></span> Logout
 </a>
-<div>${userTable}</div>
-<a href="/modify" method="post" class="btn btn-success">Add User</a>
+<div>${userDetails}</div>
+<a href="/modify?username=${user}" method="post" type = "button" class="btn btn-warning">Edit Info</a>
 </body>
 </html>
