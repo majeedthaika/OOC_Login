@@ -16,7 +16,7 @@ public class Webapp {
 
         String docBase = "src/main/webapp/";
         Tomcat tomcat = new Tomcat();
-        tomcat.setPort(443);
+        tomcat.setPort(80);
         SecurityService securityService = new SecurityService();
         DatabaseService databaseService = new DatabaseService();
         UserService userService = new UserService();
